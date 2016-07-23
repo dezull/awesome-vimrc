@@ -1,0 +1,72 @@
+" Copy this file into my_configs.vim and modify
+
+
+""""""""""""""""""
+" => GUI Settings
+""""""""""""""""""
+if has("gui_running")
+    set guioptions-=T
+
+    if has("gui_gtk2")
+        set guifont=Hack\ 11
+        " Ctrl-C + Ctrl+V
+        vmap <C-c> "+yi
+        vmap <C-x> "+c
+        vmap <C-v> c<ESC>"+p
+        imap <C-v> <C-r><C-o>+
+    elseif has("gui_win32")
+        set guifont=Consolas:h11:cANSI
+    endif
+
+    let g:lightline = {
+       \ 'colorscheme': 'wombat',
+       \ 'active': {
+       \   'left': [ ['mode', 'paste'],
+       \             ['fugitive', 'readonly', 'filename', 'modified'] ],
+       \   'right': [ [ 'lineinfo' ], ['percent'] ]
+       \ },
+       \ 'component': {
+       \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
+       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+       \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+       \ },
+       \ 'component_visible_condition': {
+       \   'readonly': '(&filetype!="help"&& &readonly)',
+       \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+       \ },
+       \   'separator': { 'left': '', 'right': '' },
+       \   'subseparator': { 'left': '', 'right': '' }
+       \ }
+endif
+
+
+""""""""""""""""""
+" => Indentations & folds
+""""""""""""""""""
+set nofoldenable
+
+au FileType html setl sw=4 sts=4 et
+au FileType javascript setl sw=2 sts=2 et nofoldenable
+au FileType json setl sw=2 sts=2 et
+au FileType css setl sw=2 sts=2 et
+au FileType yaml setl sw=2 sts=2 et
+au FileType ruby setl sw=2 sts=2 et
+au FileType eruby setl sw=2 sts=2 et
+
+au BufNewFile,BufRead *.yml.dist set ft=yaml
+au BufNewFile,BufRead *.html.erb set ft=eruby
+
+
+""""""""""""
+" => Color
+""""""""""""
+set background=dark
+colorscheme gruvbox
+call GruvboxHlsShowCursor()
+
+"""""""""""
+" => Misc
+"""""""""""
+" Re-disable persistent undo
+set noundofile
