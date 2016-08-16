@@ -77,5 +77,5 @@ set noundofile
 """""""""""
 " Exclude some more paths?
 let g:ctrlp_custom_ignore = g:ctrlp_custom_ignore .
-                            \ '|custom/exclude/path1\' " custom ctrlp exclude path
-                            \ '|custom/exclude/path2\' " another exclude path
+                            \ '\|custom\/exclude\/path1' " custom ctrlp exclude path
+                            \ '\|custom\/exclude\/path2' " another exclude path
