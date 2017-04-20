@@ -37,12 +37,12 @@ Plug 'https://github.com/digitaltoad/vim-pug'
 Plug 'https://github.com/maxbrunsfeld/vim-yankstack'
 Plug 'https://github.com/vim-scripts/peaksea'
 Plug 'https://github.com/vim-scripts/AutoComplPop'
-Plug 'https://github.com/Shutnik/jshint2.vim'
 Plug 'https://github.com/fholgado/minibufexpl.vim'
 Plug 'https://github.com/elzr/vim-json'
 Plug 'https://github.com/beyondwords/vim-twig.git'
 Plug 'https://github.com/drmikehenry/vim-fontsize.git'
 Plug 'https://github.com/vim-scripts/matchit.zip.git'
+Plug 'https://github.com/nikvdp/ejs-syntax.git'
 Plug 'https://github.com/itchyny/lightline.vim', {
     \ 'do': 'git clone https://github.com/powerline/fonts /tmp/powerline-fonts && cd /tmp/powerline-fonts && ./install.sh'
     \ }
