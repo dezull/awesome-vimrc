@@ -1,50 +1,64 @@
+" For configuration & simple documentation for each reference,
+" see `plugins_config.vim`
+
 call plug#begin('~/.vim/plugged')
 
-Plug 'mileszs/ack.vim'
-Plug 'rking/ag.vim'
-Plug 'corntrace/bufexplorer'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'vim-scripts/mayansmoke'
-Plug 'scrooloose/nerdtree'
-Plug 'evanmiller/nginx-vim-syntax'
-Plug 'amix/open_file_under_cursor.vim'
-Plug 'scrooloose/snipmate-snippets'
+" Utils
 Plug 'vim-scripts/tlib'
 Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'sophacles/vim-bundle-mako'
+Plug 'tpope/vim-repeat'
+
+" Files/browsing related
+Plug 'mileszs/ack.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'amix/open_file_under_cursor.vim'
+Plug 'corntrace/bufexplorer'
+Plug 'fholgado/minibufexpl.vim'
+Plug 'scrooloose/nerdtree'
+
+" Syntax/filetype/linter
+Plug 'scrooloose/syntastic'
 Plug 'kchmck/vim-coffee-script'
-Plug 'altercation/vim-colors-solarized'
-Plug 'michaeljsmith/vim-indent-object'
+Plug 'digitaltoad/vim-pug'
 Plug 'groenewege/vim-less'
 Plug 'tpope/vim-markdown'
-Plug 'therubymug/vim-pyte'
+Plug 'elzr/vim-json'
+Plug 'beyondwords/vim-twig'
+Plug 'nikvdp/ejs-syntax'
+
+" Snippets/completion
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
+Plug 'vim-scripts/AutoComplPop'
+
+" VCS
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" String/yank/replacer
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-fugitive'
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'vim-scripts/matchit.zip'
+
+" Commenting
+Plug 'scrooloose/nerdcommenter'
+
+" Distraction free writing
 Plug 'junegunn/goyo.vim'
 Plug 'amix/vim-zenroom2'
-Plug 'scrooloose/syntastic'
-Plug 'tpope/vim-repeat'
-Plug 'scrooloose/nerdcommenter'
-Plug 'fatih/vim-go'
-Plug 'airblade/vim-gitgutter'
-Plug 'morhetz/gruvbox'
-Plug 'nvie/vim-flake8'
-Plug 'digitaltoad/vim-pug'
-Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'vim-scripts/peaksea'
-Plug 'vim-scripts/AutoComplPop'
-Plug 'fholgado/minibufexpl.vim'
-Plug 'elzr/vim-json'
-Plug 'beyondwords/vim-twig'
+
+" UI
 Plug 'drmikehenry/vim-fontsize'
-Plug 'vim-scripts/matchit.zip'
-Plug 'nikvdp/ejs-syntax'
 Plug 'itchyny/lightline.vim', {
     \ 'do': 'git clone https://github.com/powerline/fonts /tmp/powerline-fonts && cd /tmp/powerline-fonts && ./install.sh'
     \ }
+
+" Color schemes
+Plug 'vim-scripts/mayansmoke'
+Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
+Plug 'vim-scripts/peaksea'
 
 call plug#end()

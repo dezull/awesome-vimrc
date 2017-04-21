@@ -1,9 +1,12 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Important: 
-"       This requries that you install https://github.com/amix/vimrc !
+" Dzul: Most stuff here comes from the awesome vimrc by Amir Salihefendic:
+"
+" http://amix.dk - amix@amix.dk
+"
+" Blog_post: 
+"       http://amix.dk/blog/post/19691#The-ultimate-Vim-configuration-on-Github
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => GUI related
@@ -112,7 +115,6 @@ iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 " => Omni complete functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

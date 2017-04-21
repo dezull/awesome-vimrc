@@ -1,38 +1,21 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer: 
-"       Amir Salihefendic
-"       http://amix.dk - amix@amix.dk
+" Dzul: Most stuff here comes from the awesome vimrc by Amir Salihefendic:
 "
-" Version: 
-"       5.0 - 29/05/12 15:43:36
+" http://amix.dk - amix@amix.dk
 "
 " Blog_post: 
 "       http://amix.dk/blog/post/19691#The-ultimate-Vim-configuration-on-Github
-"
-" Awesome_version:
-"       Get this config, nice color schemes and lots of plugins!
-"
-"       Install the awesome version from:
-"
-"           https://github.com/amix/vimrc
-"
-" Syntax_highlighted:
-"       http://amix.dk/vim/vimrc.html
-"
-" Raw_version: 
-"       http://amix.dk/vim/vimrc.txt
 "
 " Sections:
 "    -> General
 "    -> VIM user interface
 "    -> Colors and Fonts
-"    -> Files and backups
+"    -> Files, backups and undo
 "    -> Text, tab and indent related
 "    -> Visual mode related
-"    -> Moving around, tabs and buffers
+"    -> Moving around, tabs, windows and buffers
 "    -> Status line
 "    -> Editing mappings
-"    -> vimgrep searching and cope displaying
 "    -> Spell checking
 "    -> Misc
 "    -> Helper functions
@@ -234,8 +217,8 @@ map <leader>h :bprevious<cr>
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
+map <leader>tm :tabmove<cr>
+map <leader>t<leader> :tabnext<cr>
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -300,34 +283,9 @@ autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Ag searching and cope displaying
-"    requires ag.vim - it's much better than vimgrep/grep
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" When you press gv you Ag after the selected text
-vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
-
-" Open Ag and put the cursor in the right position
-map <leader>g :Ag! 
-
-" When you press <leader>r you can search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-
-" Do :help cope if you are unsure what cope is. It's super useful!
-"
-" When you search with Ag, display your results in cope by doing:
-"   <leader>cc
-"
-" To go to the next search result do:
-"   <leader>n
-"
-" To go to the previous search results do:
-"   <leader>p
-"
-map <leader>cc :botright cope<cr>
-map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
-map <leader>n :cn<cr>
-map <leader>p :cp<cr>
+" External grep
+let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
+set grepprg=/usr/bin/grep\ -nH
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -378,7 +336,7 @@ function! VisualSelection(direction, extra_filter) range
     let l:pattern = substitute(l:pattern, "\n$", "", "")
 
     if a:direction == 'gv'
-        call CmdLine("Ag \"" . l:pattern . "\" " )
+        call CmdLine("Ack \"" . l:pattern . "\" " )
     elseif a:direction == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     endif
