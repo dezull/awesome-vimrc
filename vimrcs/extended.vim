@@ -49,6 +49,18 @@ set guioptions-=L
 set background=dark
 colorscheme peaksea
 
+" Open GUI terminal & file manager with <leader>t & <leader>xo respectively
+if has("osx")
+    map <leader>t :!nohup open . -a Terminal &> /dev/null &<cr><cr>
+    map <leader>xo :!nohup open . &> /dev/null &<cr><cr>
+elseif has("unix")
+    if executable("x-terminal-emulator")
+        map <leader>t :!nohup x-terminal-emulator . &> /dev/null &<cr><cr>
+    endif
+    if executable("xdg-open")
+        map <leader>xo :!nohup xdg-open . &> /dev/null &<cr><cr>
+    endif
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Fast editing and reloading of vimrc configs
