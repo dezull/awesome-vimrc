@@ -52,6 +52,14 @@ let g:ctrlp_custom_ignore = g:ctrlp_custom_ignore .
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Session Management
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Uncomment disable auto session management, you can still call SaveSession()
+" and RestoreSession()
+let g:auto_session_management = 1
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Disable persistent undo

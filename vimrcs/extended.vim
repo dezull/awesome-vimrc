@@ -164,3 +164,85 @@ endfunc
 func! CurrentFileDir(cmd)
     return a:cmd . " " . expand("%:p:h") . "/"
 endfunc
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Session management
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:auto_session_management = 0
+let s:path_arg = expand('%:p')
+let s:path_arg_defined = strlen(@%) > 0
+
+" Workaround to remove BufExplorer from MBE list
+" due to some bug I have yet to figure out, see SaveSession()
+function! s:RemoveBufExpFromMBE(session_filename)
+    exe "!sed -iE -e '/BufExplorer/d' " . shellescape(a:session_filename) . ' &> /dev/null &'
+endfunction
+
+function! s:AutoSaveSession()
+    if g:auto_session_management
+        call SaveSession()
+    endif
+endfunction
+
+function! s:AutoRestoreSession()
+    if g:auto_session_management
+        call RestoreSession()
+    endif 
+endfunction
+
+function! SaveSession()
+    " FIXME Session is not saved properly if MBE is opened,
+    " haven't had time to check this yet
+    MBECloseAll
+    let l:currentdir = getcwd()
+
+    " This is highly opinionated:
+    " 1. If current working directory it's not ~/Documents, don't bother at all
+    " 2. If it is, but under Playground subdirectory, skip it (I use 'Playground'
+    " to quickly test stuff, etc, non-project stuff).
+    " 3. If vim is started with a path argument, and it is not under ~/Documents,
+    " skip it. Eg: quickly open a file in ~/Desktop.
+    if !(l:currentdir =~ $HOME . '/Documents')
+        return 0
+    elseif (l:currentdir =~ $HOME . '/Documents/Playground/')
+        return 0
+    elseif ((s:path_arg_defined) && !(s:path_arg =~ $HOME . '/Documents'))
+        return 0
+    endif
+
+    " Session file is saved under a directory tree that mirrors the current
+    " working directory, inside ~/.vim/sessions
+    let l:sessiondir = $HOME . "/.vim/sessions" . getcwd()
+    if (filewritable(l:sessiondir) != 2)
+        exe 'silent !mkdir -p "' . l:sessiondir . '"'
+        redraw!
+    endif
+    let l:filename = l:sessiondir . '/session.vim'
+    exe 'mksession! ' fnameescape(l:filename)
+    call s:RemoveBufExpFromMBE(l:filename)
+endfunction
+
+function! RestoreSession()
+    MBECloseAll
+    let l:sessiondir = $HOME . "/.vim/sessions" . getcwd()
+    let l:sessionfile = l:sessiondir . "/session.vim"
+
+    let l:currentdir = getcwd()
+    " If file is opened as an argument to vim & not under specified diretories,
+    " don't manage it (see SaveSession() above)
+    if s:path_arg_defined && !(s:path_arg =~ l:currentdir)
+        echo "Disable session."
+    elseif filereadable(l:sessionfile)
+        exe 'source ' . fnameescape(l:sessionfile)
+    else
+        echo "No session loaded."
+    endif
+endfunction
+
+" Required by session management
+set sessionoptions-=options
+
+au VimEnter * nested :call s:AutoRestoreSession()
+au VimLeave * :call s:AutoSaveSession()
