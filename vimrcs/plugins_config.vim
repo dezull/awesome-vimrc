@@ -102,8 +102,8 @@ map <leader>nf :NERDTreeFind<cr>
 " --------------------
 "
 " Syntax checker - use error window to show linter messages
-" Javascript
 let g:syntastic_javascript_checkers = ['standard']
+let g:syntastic_ruby_checkers = ['rubocop']
 
 " Custom CoffeeScript SyntasticCheck
 func! SyntasticCheckCoffeescript()
@@ -266,23 +266,21 @@ let g:user_zen_mode='a'
 " Pretty status line. If supported font is used, you get even nicer UI.
 " The post install VimPlug hook should install the fonts for you.
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ ['mode', 'paste'],
-      \             ['fugitive', 'readonly', 'filename', 'modified'] ],
-      \   'right': [ [ 'lineinfo' ], ['percent'] ]
-      \ },
-      \ 'component': {
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-      \ },
-      \ 'separator': { 'left': ' ', 'right': ' ' },
-      \ 'subseparator': { 'left': ' ', 'right': ' ' }
-      \ }
-
+   \ 'active': {
+   \   'left': [ ['mode', 'paste'],
+   \             ['fugitive', 'readonly', 'filename', 'modified'] ],
+   \   'right': [ [ 'lineinfo' ], ['percent'] ]
+   \ },
+   \ 'component': {
+   \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
+   \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+   \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+   \ },
+   \ 'component_visible_condition': {
+   \   'readonly': '(&filetype!="help"&& &readonly)',
+   \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+   \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+   \ },
+   \   'separator': { 'left': '', 'right': '' },
+   \   'subseparator': { 'left': '', 'right': '' }
+   \ }

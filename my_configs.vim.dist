@@ -1,81 +1,61 @@
 " Copy this file into my_configs.vim and modify
 
 
-""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => GUI Settings
-""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("gui_running")
+    " You want the toolbar? OK, comment the following
     set guioptions-=T
 
-    if has("gui_gtk2")
-        set guifont=Hack\ 11
-        " Ctrl-C + Ctrl+V
-        vmap <C-c> "+yi
-        vmap <C-x> "+c
-        vmap <C-v> c<ESC>"+p
-        imap <C-v> <C-r><C-o>+
+    " Set you prefered font here
+    if has("gui_macvim")
+        " set guifont=Hack:h12,Menlo:h15
+    elseif has("gui_gtk2")
+        " set guifont=Hack\ 11
     elseif has("gui_win32")
-        set guifont=Consolas:h11:cANSI
+        " set guifont=Hack:h11:cANSI
     endif
 endif
 
-let g:lightline = {
-   \ 'colorscheme': 'wombat',
-   \ 'active': {
-   \   'left': [ ['mode', 'paste'],
-   \             ['fugitive', 'readonly', 'filename', 'modified'] ],
-   \   'right': [ [ 'lineinfo' ], ['percent'] ]
-   \ },
-   \ 'component': {
-   \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
-   \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-   \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-   \ },
-   \ 'component_visible_condition': {
-   \   'readonly': '(&filetype!="help"&& &readonly)',
-   \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-   \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-   \ },
-   \   'separator': { 'left': '', 'right': '' },
-   \   'subseparator': { 'left': '', 'right': '' }
-   \ }
 
-
-""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Indentations & folds
-""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set you prefered styles here
 set nofoldenable
-
-au FileType html setl sw=4 sts=4 et
-au FileType javascript setl sw=2 sts=2 et nofoldenable
-au FileType json setl sw=2 sts=2 et
-au FileType css setl sw=2 sts=2 et
-au FileType yaml setl sw=2 sts=2 et
-au FileType ruby setl sw=2 sts=2 et
-au FileType eruby setl sw=2 sts=2 et
-
-au BufNewFile,BufRead *.yml.dist set ft=yaml
-au BufNewFile,BufRead *.html.erb set ft=eruby
+" au FileType javascript setl sw=2 sts=2 et nofoldenable
 
 
-""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Color
-""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
+" gruvbox comes with lightline (status line) theme as well
 colorscheme gruvbox
-call GruvboxHlsShowCursor()
-
-"""""""""""
-" => Misc
-"""""""""""
-" Re-disable persistent undo
-set noundofile
 
 
-"""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => CtrlP
-"""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Exclude some more paths?
 let g:ctrlp_custom_ignore = g:ctrlp_custom_ignore .
                             \ '\|custom\/exclude\/path1' " custom ctrlp exclude path
                             \ '\|custom\/exclude\/path2' " another exclude path
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => MiniBufExplorer
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Uncomment the following to disable MiniBufExplorer on start 
+" let g:miniBufExplorerAutoStart = 0
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Disable persistent undo
+set noundofile
+
+" To load project .vimrc, uncomment the following.
+" set exrc
