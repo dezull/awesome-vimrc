@@ -227,7 +227,7 @@ map <silent> gb <leader>cs
 " nested comment
 vmap <silent> gm <leader>cn
 " uncomment line, do this to uncomment nested
-map <silent> gu <leader>cu
+map <silent> gx <leader>cu
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
