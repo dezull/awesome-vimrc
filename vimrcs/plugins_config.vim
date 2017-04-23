@@ -161,7 +161,7 @@ snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
 " tpope/vim-fugitive
 " ------------------
 "
-" Git wrapper, eg: `:GStatus` for `git status`.
+" Git wrapper, eg: `:Gstatus` for `git status`.
 
 " airblade/vim-gitgutter
 " ----------------------
