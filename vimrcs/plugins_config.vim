@@ -77,8 +77,10 @@ map <leader>o :BufExplorer<cr>
 let g:miniBufExplBuffersNeeded = 0
 let g:miniBufExplVSplit = 25
 let g:miniBufExplBRSplit = 0
-"autocmd BufRead,BufNew :call MBE
-map <leader>u :MBEToggle<cr>
+map <leader>uu :MBEToggle<cr>
+" Move focus to MBE window, especially useful for multi-window edit,
+" you can quickly move to MBE to open file in the previous window
+map <leader>uf :MBEFocus<cr>
 
 " scrooloose/nerdtree
 " -------------------
