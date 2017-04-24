@@ -104,7 +104,7 @@ map <leader>nf :NERDTreeFind<cr>
 " -------------------
 "
 " Symbols browser
-let g:tagbar_autoclose = 1
+let g:tagbar_autoclose = 0
 let g:tagbar_width = 40
 "map <leader>nn :TagbarToggle<cr>
 map <leader>tb :call <SID>DoThenResize(':TagbarToggle')<cr>
