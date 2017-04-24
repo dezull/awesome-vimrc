@@ -75,9 +75,12 @@ map <leader>o :BufExplorer<cr>
 "
 "  Browse the current buffer in the sidebar
 let g:miniBufExplBuffersNeeded = 0
-let g:miniBufExplVSplit = 25
+let g:miniBufExplVSplit = 30
 let g:miniBufExplBRSplit = 0
-map <leader>uu :MBEToggle<cr>
+let g:miniBufExplEqualAlways = 0
+" map <leader>uu :MBEToggle<cr>
+map <leader>uu :call <SID>DoThenResize(':MBEToggle')<cr>
+map <F8> <leader>uu
 " Move focus to MBE window, especially useful for multi-window edit,
 " you can quickly move to MBE to open file in the previous window
 map <leader>uf :MBEFocus<cr>
@@ -87,14 +90,40 @@ map <leader>uf :MBEFocus<cr>
 "
 " Browse the current directory tree
 let g:NERDTreeWinPos = "left"
+let g:NERDTreeWinSize=30
 let NERDTreeShowHidden=0
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let NERDTreeMinimalUI=1
-let g:NERDTreeWinSize=35
-map <leader>nn :NERDTreeToggle<cr>
+"map <leader>nn :NERDTreeToggle<cr>
+map <leader>nn :call <SID>DoThenResize(':NERDTreeToggle')<cr>
+map <F7> <leader>nn
 map <leader>nb :NERDTreeFromBookmark
 map <leader>nf :NERDTreeFind<cr>
 
+" majutsushi/tagbar
+" -------------------
+"
+" Symbols browser
+let g:tagbar_autoclose = 1
+let g:tagbar_width = 40
+"map <leader>nn :TagbarToggle<cr>
+map <leader>tb :call <SID>DoThenResize(':TagbarToggle')<cr>
+map <F9> <leader>tb
+
+function! s:ResetWindowsSize()
+    let saved_ead = &ead
+    let &ead = 'hor'
+    set equalalways
+    let &ead = saved_ead
+    set noequalalways
+endfunction
+
+" Avoid window resizing madness when toggling windows.
+" especially when doing multi-window editing.
+function! s:DoThenResize(what)
+    execute a:what
+    call s:ResetWindowsSize()
+endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntax/filetype/linter
@@ -309,9 +338,9 @@ endfunction
 
 function! LightlineFilename()
     let fname = expand('%:t')
-    return fname == 'ControlP' 
+    return fname == 'ControlP'
                 \ && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
-                \ fname == '__Tagbar__' ? g:lightline.fname :
+                \ fname =~ '__Tagbar__' ? g:lightline.fname :
                 \ fname =~ '\[BufExplorer\]\|-MiniBufExplorer-\|NERD_tree' ? '' :
                 \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
                 \ ('' != fname ? fname : '[No Name]') .
@@ -320,7 +349,7 @@ endfunction
 
 function! LightlineMode()
     let fname = expand('%:t')
-    return fname == '__Tagbar__' ? 'Tagbar' :
+    return fname =~ '__Tagbar__' ? 'Tagbar' :
                 \ fname == 'ControlP' ? 'CtrlP' :
                 \ fname =~ 'NERD_tree' ? 'NERDTree' :
                 \ fname =~ '\[BufExplorer\]' ? 'BufExplorer' :
@@ -364,5 +393,12 @@ function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
 endfunction
 
 function! CtrlPStatusFunc_2(str)
+    return lightline#statusline(0)
+endfunction
+
+let g:tagbar_status_func = 'TagbarStatusFunc'
+
+function! TagbarStatusFunc(current, sort, fname, ...) abort
+    let g:lightline.fname = a:fname
     return lightline#statusline(0)
 endfunction

@@ -13,8 +13,11 @@ Plug 'mileszs/ack.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'corntrace/bufexplorer'
-Plug 'fholgado/minibufexpl.vim'
+Plug 'dezull/minibufexpl.vim'
 Plug 'scrooloose/nerdtree'
+" On macOS (comes with BSD Ctags), you can install Exuberant Ctags
+" with homebrew: `$brew install ctags`
+Plug 'majutsushi/tagbar'
 
 " Syntax/filetype/linter
 Plug 'scrooloose/syntastic'
