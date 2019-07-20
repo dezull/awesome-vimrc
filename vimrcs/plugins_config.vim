@@ -23,6 +23,12 @@
 "
 " `.` command improvement. Needed by other plugins.
 
+" KabbAmine/vCoolor.vim
+" ---------------------
+"
+" GUI Color picker
+let g:vcoolor_disable_mappings = 1
+let g:vcoolor_map = 'ç' " <M-g>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files/browsing related
@@ -31,15 +37,39 @@
 " ctrlpvim/ctrlp.vim
 " ------------------
 "
-" Search files in the current directory tree. Use `<c-f>` to trigger.
+" Use <leader>cp to trigger.
 " In the window, use `<c-f>` switch to file/buffer/MRU search,
 " `<c-r>` to toggle regex, `<c-d>` to toggle fullpath/filename.
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_map = '<c-f>'
-map <leader>j :CtrlP<cr>
+" let g:ctrlp_map = '<c-f>'
+let g:ctrlp_map = '<leader>cp'
 map <c-b> :CtrlPBuffer<cr>
+let g:ctrlp_working_path_mode = 0
 let g:ctrlp_max_height = 20
 let g:ctrlp_custom_ignore = 'tmp\|node_modules\|^\.DS_Store\|^\.git\|^\.coffee\|bower_components'
+
+" junegunn/fzf.vim
+" ----------------
+"
+let $FZF_DEFAULT_COMMAND='
+            \ (
+            \   (git ls-files --others --exclude-standard -c -m) ||
+            \   (find . -path "*/\.*" -prune -o -type f -print -o -type l -print -maxdepth 3 2> /dev/null | sed s/^..//)
+            \ ) | sort | uniq 2> /dev/null'
+nmap <c-f> :FZF<CR>
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " mileszs/ack.vim
 " ---------------
@@ -69,6 +99,8 @@ let g:bufExplorerShowRelativePath=1
 let g:bufExplorerFindActive=1
 let g:bufExplorerSortBy='name'
 map <leader>o :BufExplorer<cr>
+" Use similar sort as to MBE below
+let g:bufExplorerSortBy='number'
 
 " fholgado/minibufexpl.vim
 " ------------------------
@@ -97,7 +129,7 @@ let NERDTreeMinimalUI=1
 "map <leader>nn :NERDTreeToggle<cr>
 map <leader>nn :call <SID>DoThenResize(':NERDTreeToggle')<cr>
 map <F7> <leader>nn
-map <leader>nb :NERDTreeFromBookmark
+map <leader>nb :NERDTreeFromBookmark<Space>
 map <leader>nf :NERDTreeFind<cr>
 
 " majutsushi/tagbar
@@ -125,25 +157,56 @@ function! s:DoThenResize(what)
     call s:ResetWindowsSize()
 endfunction
 
+let g:tagbar_type_javascript = {
+    \ 'ctagstype': 'js',
+    \ 'kinds': [
+        \ 'r:var:1',
+        \ 'a:array:1',
+        \ 'o:object',
+        \ 'f:function'
+    \ ],
+    \ 'scope2kind' : {
+        \ 'f' : 'function',
+    \ },
+\ }
+
+let g:tagbar_type_emptytagbar = {
+    \ 'ctagstype': 'emptytagbar',
+    \ 'kinds' : []
+\ }
+
+let g:tagbar_compact = 1
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntax/filetype/linter
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" scrooloose/syntastic
-" --------------------
-"
-" Syntax checker - use error window to show linter messages
-let g:syntastic_javascript_checkers = ['standard']
-let g:syntastic_ruby_checkers = ['rubocop']
+" Shougo/deoplete.nvim
+let g:deoplete#enable_at_startup = 1
 
-" Custom CoffeeScript SyntasticCheck
-func! SyntasticCheckCoffeescript()
-    let l:filename = substitute(expand("%:p"), '\(\w\+\)\.coffee', '.coffee.\1.js', '')
-    execute "tabedit " . l:filename
-    execute "SyntasticCheck"
-    execute "Errors"
-endfunc
-nnoremap <silent> <leader>c :call SyntasticCheckCoffeescript()<cr>
+" w0rp/ale
+" --------------------
+" Use <leader><leader>n and <leader><leader>p to jump to next and previous
+" lint errors.
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+set omnifunc=ale#completion#OmniFunc
+set completeopt=menu,menuone,preview,noinsert
+nmap ff :ALEFix<CR>
+
+" Map ALE next & previous with vim.repeat support
+nnoremap <silent> <Plug>RepeatALEPreviousWrap :<c-u>ALEPreviousWrap<cr>:call repeat#set("\<Plug>RepeatALEPreviousWrap")<cr>
+nmap <silent> <leader><leader>p <Plug>RepeatALEPreviousWrap
+nnoremap <silent> <Plug>RepeatALENextWrap :<c-u>ALENextWrap<cr>:call repeat#set("\<Plug>RepeatALENextWrap")<cr>
+nmap <leader><leader>n <Plug>RepeatALENextWrap
+
+" posva/vim-vue
+" -------------
+" When checking for preprocessor languages, multiple syntax highlighting checks 
+" are done, which can slow down vim. This variable prevents vim-vue from 
+" supporting every pre-processor language highlighting.
+let g:vue_disable_pre_processors=1
 
 " Other Filetype/language specifics plugins
 " -----------------------------------------
@@ -154,33 +217,20 @@ nnoremap <silent> <leader>c :call SyntasticCheckCoffeescript()<cr>
 " elzr/vim-json
 " beyondwords/vim-twig
 " nikvdp/ejs-syntax
+" cakebaker/scss-syntax.vim
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 " => Snippets/completion
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" garbas/vim-snipmate
-" -------------------
-"
-" Use <tab> or <c-j> to insert code snippet. Snippets provided by
-" `honza/vim-snippets`.
-"
-" Eg:
-" type 'fun' in javascript file, and press <tab> (or <c-j>)
-ino <c-j> <c-r>=snipMate#TriggerSnippet()<cr>
-snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
-
-" honza/vim-snippets
-" ------------------
-"
-" Provide code snippets for various languages.
-
-" vim-scripts/AutoComplPop
-" ------------------------
-"
-" Auto completion popup. Provides omni-completion for certain file types.
-" Works with `garbas/vim-snipmate`.
+" Shougo/neosnippet.vim
+" ---------------------
+" Use <c-j> to insert code snippet, and to jump to placeholders. Snippets provided by
+" Shougo/neosnippet-snippets
+imap <C-j>     <Plug>(neosnippet_expand_or_jump)
+smap <C-j>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-j>     <Plug>(neosnippet_expand_target)
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -207,11 +257,27 @@ let g:gitgutter_enabled=0
 " tpope/vim-surround
 " ------------------
 "
-" surround selection (FIXME: doesn't work), word with string. Eg: enclose text in quotes.
+" surround selection, word with string. Eg: enclose text in quotes.
+" To surround with (') in normal/insert <leader>': foo -> 'foo'
+" To delete enclosing (') in normal <leader>d': 'foo' -> foo
 nmap <silent> <leader>' ysiw'
 nmap <silent> <leader>" ysiw"
+nmap <silent> <leader>) ysiw)
+nmap <silent> <leader>] ysiw]
+nmap <silent> <leader>} ysiw}
+nmap <silent> <leader>> ysiw>
+vmap <silent> <leader>' $q
+vmap <silent> <leader>" $e
+vmap <silent> <leader>) $1
+vmap <silent> <leader>] $2
+vmap <silent> <leader>} $3
+vmap <silent> <leader>> <esc>`>a><esc>`<i<<esc>
 nmap <silent> <leader>d' ds'
 nmap <silent> <leader>d" ds"
+nmap <silent> <leader>d) ds)
+nmap <silent> <leader>d] ds]
+nmap <silent> <leader>d} ds}
+nmap <silent> <leader>d> ds>
 
 " terryma/vim-expand-region
 " -------------------------
@@ -225,14 +291,22 @@ nmap <silent> <leader>d" ds"
 " First, select a word with <c-n>, and <c-n> again to select next occurence.
 " <c-x> to skip, <c-p> for previous. Once selected, use other mapping,
 " eg: 'c', to replace.
+let g:multi_cursor_exit_from_visual_mode = 1
+let g:multi_cursor_exit_from_insert_mode = 1
+" Fix issues with deoplete
+function g:Multiple_cursors_before()
+    call deoplete#custom#buffer_option('auto_complete', v:false)
+endfunction
+function g:Multiple_cursors_after()
+    call deoplete#custom#buffer_option('auto_complete', v:true)
+endfunction
+
 
 " maxbrunsfeld/vim-yankstack
 " --------------------------
 "
 " Browse history of yanks
-" FIXME <c-P> doesn't work
-nmap <c-p> <Plug>yankstack_substitute_older_paste
-nmap <c-P> <Plug>yankstack_substitute_newer_paste
+" Use <M-p> and <M-P> to cycle through items in the yank stack
 
 " vim-scripts/matchit.zip
 " -----------------------
@@ -257,6 +331,28 @@ map <silent> gb <leader>cs
 vmap <silent> gm <leader>cn
 " uncomment line, do this to uncomment nested
 map <silent> gx <leader>cu
+
+" Hooks for VueJS files
+let g:ft = ''
+fu! NERDCommenter_before()
+    if &ft == 'vue'
+        let g:ft = 'vue'
+        let stack = synstack(line('.'), col('.'))
+        if len(stack) > 0
+            let syn = synIDattr((stack)[0], 'name')
+            if len(syn) > 0
+                let syn = tolower(syn)
+                exe 'setf '.syn
+            endif
+        endif
+    endif
+endfu
+fu! NERDCommenter_after()
+    if g:ft == 'vue'
+        setf vue
+        let g:ft = ''
+    endif
+endfu
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -298,9 +394,21 @@ let g:user_zen_mode='a'
 " If supported font is used, you get even nicer UI.
 " The post install VimPlug hook should install the fonts for you.
 let g:lightline = {
+   \ 'component_expand': {
+   \   'linter_checking': 'lightline#ale#checking',
+   \   'linter_warnings': 'lightline#ale#warnings',
+   \   'linter_errors': 'lightline#ale#errors',
+   \   'linter_ok': 'lightline#ale#ok'
+   \ },
+   \ 'component_type': {
+   \   'linter_checking': 'left',
+   \   'linter_warnings': 'warning',
+   \   'linter_errors': 'error',
+   \   'linter_ok': 'left'
+   \ },
    \ 'active': {
-   \   'left': [ ['mode', 'paste'], ['fugitive', 'filename'], ['ctrlpmark'] ],
-   \   'right': [ [ 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+   \   'left': [ ['mode', 'paste'], ['fugitive', 'filename'] ],
+   \   'right': [ [ 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ], [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ] ]
    \ },
    \ 'component_function': {
    \   'mode': 'LightlineMode',
@@ -309,11 +417,10 @@ let g:lightline = {
    \   'fileformat': 'LightlineFileformat',
    \   'filetype': 'LightlineFiletype',
    \   'fileencoding': 'LightlineFileencoding',
-   \   'ctrlpmark': 'CtrlPMark'
    \ },
-   \   'separator': { 'left': '', 'right': '' },
-   \   'subseparator': { 'left': '', 'right': '' }
-   \ }
+   \ 'separator': { 'left': '', 'right': '' },
+   \ 'subseparator': { 'left': '', 'right': '' }
+\ }
 
 function! LightlineFugitive()
     try

@@ -59,6 +59,23 @@ let g:ctrlp_custom_ignore = g:ctrlp_custom_ignore .
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => ALE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Replace with your favourite code style fixers
+let g:ale_fixers = {
+  \   'javascript': [
+  \       'eslint',
+  \   ],
+  \   'vue': [
+  \       'eslint',
+  \   ],
+  \   'ruby': [
+  \       'rubocop',
+  \   ],
+  \ }
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Session Management
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Uncomment disable auto session management, you can still call SaveSession()

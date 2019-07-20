@@ -13,7 +13,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set font according to system
 if has("mac") || has("macunix")
-    set gfn=Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
+    if !has("gui_vimr")
+        set gfn=Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
+    endif
 elseif has("win16") || has("win32")
     set gfn=Hack:h14,Source\ Code\ Pro:h12,Bitstream\ Vera\ Sans\ Mono:h11
 elseif has("gui_gtk2")
@@ -51,11 +53,11 @@ colorscheme peaksea
 
 " Open GUI terminal & file manager with <leader>t & <leader>xo respectively
 if has("osx")
-    map <leader>t :!nohup open . -a Terminal &> /dev/null &<cr><cr>
+    map <leader>xt :!nohup open . -a Terminal &> /dev/null &<cr><cr>
     map <leader>xo :!nohup open . &> /dev/null &<cr><cr>
 elseif has("unix")
     if executable("x-terminal-emulator")
-        map <leader>t :!nohup x-terminal-emulator . &> /dev/null &<cr><cr>
+        map <leader>xt :!nohup x-terminal-emulator . &> /dev/null &<cr><cr>
     endif
     if executable("xdg-open")
         map <leader>xo :!nohup xdg-open . &> /dev/null &<cr><cr>
@@ -226,10 +228,10 @@ endfunction
 
 function! RestoreSession()
     MBECloseAll
-    let l:sessiondir = $HOME . "/.vim/sessions" . getcwd()
+    let l:currentdir = getcwd()
+    let l:sessiondir = $HOME . "/.vim/sessions" . l:currentdir
     let l:sessionfile = l:sessiondir . "/session.vim"
 
-    let l:currentdir = getcwd()
     " If file is opened as an argument to vim & not under specified diretories,
     " don't manage it (see SaveSession() above)
     if s:path_arg_defined && !(s:path_arg =~ l:currentdir)
@@ -244,5 +246,12 @@ endfunction
 " Required by session management
 set sessionoptions-=options
 
-au VimEnter * nested :call s:AutoRestoreSession()
-au VimLeave * :call s:AutoSaveSession()
+:command SessionRestore :call RestoreSession()
+:command SessionSave :call SaveSession()
+
+" au VimEnter * nested :call s:AutoRestoreSession()
+" au VimLeave * :call s:AutoSaveSession()
+au VimEnter * nested :SessionRestore
+au VimLeave * :SessionSave
+nmap <leader>sd :SessionSave<cr>
+nmap <leader>sr :SessionRestore<cr>

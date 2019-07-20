@@ -32,6 +32,10 @@ au FileType javascript imap <c-a> alert();<esc>hi
 au FileType javascript inoremap <buffer> $r return 
 au FileType javascript inoremap <buffer> $f //--- PH<esc>FP2xi
 
+" VueJS
+au FileType vue setl sw=2 sts=2 et nofoldenable
+autocmd FileType vue syntax sync fromstart
+
 function! JavaScriptFold() 
     setl foldmethod=syntax
     setl foldlevelstart=1
@@ -57,13 +61,19 @@ au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => SCSS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufRead,BufNewFile *.scss set filetype=scss
+au FileType scss setl sw=2 sts=2 et nofoldenable
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Other languages, opinionated
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au FileType html setl sw=4 sts=4 et
 au FileType css setl sw=2 sts=2 et
 au FileType yaml setl sw=2 sts=2 et
-au FileType ruby setl sw=2 sts=2 et
-au FileType eruby setl sw=2 sts=2 et
+au FileType ruby setl sw=2 sts=2 et foldmethod=syntax
+au FileType eruby setl sw=2 sts=2 et foldmethod=indent
 
 au BufNewFile,BufRead *.yml.dist set ft=yaml
 au BufNewFile,BufRead *.html.erb set ft=eruby

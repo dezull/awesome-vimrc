@@ -7,32 +7,46 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/tlib'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tpope/vim-repeat'
+Plug 'KabbAmine/vCoolor.vim'
 
 " Files/browsing related
 Plug 'mileszs/ack.vim'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'corntrace/bufexplorer'
-Plug 'dezull/minibufexpl.vim'
+Plug 'dezull/minibufexpl.vim', { 'branch': 'patches' }
 Plug 'scrooloose/nerdtree'
 " On macOS (comes with BSD Ctags), you can install Exuberant Ctags
 " with homebrew: `$brew install ctags`
-Plug 'majutsushi/tagbar'
+Plug 'dezull/tagbar', { 'branch': 'fix/tags-not-updated' }
 
 " Syntax/filetype/linter
-Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 Plug 'kchmck/vim-coffee-script'
 Plug 'digitaltoad/vim-pug'
 Plug 'groenewege/vim-less'
 Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-haml'
 Plug 'elzr/vim-json'
 Plug 'beyondwords/vim-twig'
 Plug 'nikvdp/ejs-syntax'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
+Plug 'ap/vim-css-color'
 
 " Snippets/completion
-Plug 'garbas/vim-snipmate'
-Plug 'honza/vim-snippets'
-Plug 'vim-scripts/AutoComplPop'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim', { 'do': 'pip3 install --user pynvim' }
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 
 " VCS
 Plug 'tpope/vim-fugitive'
@@ -57,6 +71,8 @@ Plug 'drmikehenry/vim-fontsize'
 Plug 'itchyny/lightline.vim', {
     \ 'do': 'git clone https://github.com/powerline/fonts /tmp/powerline-fonts && cd /tmp/powerline-fonts && ./install.sh'
     \ }
+Plug 'https://github.com/blueyed/vim-diminactive.git'
+Plug 'maximbaz/lightline-ale'
 
 " Color schemes
 Plug 'vim-scripts/mayansmoke'
